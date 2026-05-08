@@ -7,12 +7,12 @@ services:
       context: ./bill-bloom-backend
       dockerfile: Dockerfile
     restart: unless-stopped
+    # All secrets (MONGO_URI, JWT_SECRET, API keys, etc.) are read from
+    # bill-bloom-backend/.env at runtime — never baked into the image.
+    env_file:
+      - ./bill-bloom-backend/.env
     environment:
-      - NODE_ENV=production
-      - PORT=5000
-      - MONGO_URI=${MONGO_URI}
-      - JWT_SECRET=${JWT_SECRET}
-      # Add any other secrets here or source them from a root-level .env file
+      - NODE_ENV=production   # override / guarantee production mode
     expose:
       - "5000"          # internal only; nginx proxies to this
     networks:
